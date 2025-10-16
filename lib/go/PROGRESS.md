@@ -10,15 +10,17 @@ This document tracks the progress of porting the Python Telepact library (lib/py
 - 8 packages (main + 7 internal packages)
 
 **Go Port Status:**
-- 57 Go files created (out of ~156 needed)
+- 61 Go files created (out of ~156 needed)
 - Core structure and interfaces established
 - Complete type system implemented (11 types)
 - Validation functions for all types implemented
 - Generation functions for all types implemented
+- Utility functions for struct field selection
+- Validation error types
 - Unit tests passing
 - Project builds successfully
 
-**Completion: ~37% (57/156 files)**
+**Completion: ~39% (61/156 files)**
 
 ## Project Structure
 
