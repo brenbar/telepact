@@ -10,20 +10,20 @@ This document tracks the progress of porting the Python Telepact library (lib/py
 - 8 packages (main + 7 internal packages)
 
 **Go Port Status:**
-- 72 Go files created (out of ~156 needed)
+- 75 Go files created (out of ~156 needed)
 - Core structure and interfaces established
 - Complete type system implemented (15 types)
 - All type definitions complete (including TError, THeaders, TMockCall, TMockStub)
 - Validation functions for all types implemented
 - Generation functions for all types implemented
-- Utility functions for struct field selection
-- Validation error types
+- Utility functions for struct field selection and message handling
+- Validation error types and helper functions
 - Binary encoder interfaces defined
 - Schema parsing infrastructure started (7 files)
 - Unit tests passing
 - Project builds successfully
 
-**Completion: ~46% (72/156 files)**
+**Completion: ~48% (75/156 files)**
 
 ## Project Structure
 
@@ -131,7 +131,12 @@ Validation implementation - ~26 files
 - [x] ValidateUnion.py → validate_union_helper.go (complete)
 - [x] ValidateUnionTags.py → validate_union_tags.go (complete)
 - [x] ValidateSelect.py → validate_select_helper.go (complete)
-- [ ] And other validation files...
+- [x] ValidateHeaders.py → validate_headers.go (in internal package - complete)
+- [x] ValidateResult.py → validate_result.go (in internal package - complete)
+- [x] GetInvalidErrorMessage.py → get_invalid_error_message.go (in internal package - complete)
+- [ ] ValidateMockCall.py
+- [ ] ValidateMockStub.py
+- [ ] And ~3 other validation files...
 
 ### Internal Binary (lib/go/telepact/internal/binary/)
 
@@ -176,13 +181,16 @@ Mocking utilities - ~8 files
 
 - [x] ValidateValueOfType.py → validate_value_of_type.go (in types package)
 - [x] GenerateRandomValueOfType.py → generate_random_value_of_type.go (in types package)
+- [x] SelectStructFields.py → select_struct_fields.go (complete in internal package)
+- [x] ValidateHeaders.py → validate_headers.go (complete in internal package)
+- [x] ValidateResult.py → validate_result.go (complete in internal package)
+- [x] GetInvalidErrorMessage.py → get_invalid_error_message.go (complete in internal package)
 - [ ] ClientHandleMessage.py → client_handle_message.go
 - [ ] DeserializeInternal.py → deserialize_internal.go
 - [ ] SerializeInternal.py → serialize_internal.go
 - [ ] HandleMessage.py → handle_message.go
 - [ ] ProcessBytes.py → process_bytes.go
 - [ ] ParseRequestMessage.py → parse_request_message.go
-- [ ] SelectStructFields.py → select_struct_fields.go
 
 ## Build & Test Infrastructure
 
