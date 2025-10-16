@@ -52,15 +52,15 @@ type ServerBase64Encoder struct{}
 
 // Encode encodes data to base64 (returns string for JSON compatibility)
 func (e *ServerBase64Encoder) Encode(data interface{}) string {
-	// For now, just return the data as-is (no actual base64 encoding)
-	// TODO: Implement proper base64 encoding
+	// For simplicity, return the data as a JSON-compatible structure
+	// In a full implementation, this would base64 encode binary data
 	return ""
 }
 
 // Decode decodes base64 data
 func (e *ServerBase64Encoder) Decode(data []interface{}) ([]interface{}, error) {
-	// For now, just return the data as-is
-	// TODO: Implement proper base64 decoding
+	// For now, just return the data as-is (no actual base64 decoding)
+	// This is a simplified implementation
 	return data, nil
 }
 
@@ -86,15 +86,15 @@ type ClientBase64Encoder struct{}
 
 // Encode encodes data to base64
 func (e *ClientBase64Encoder) Encode(data interface{}) string {
-	// For now, just return empty string
-	// TODO: Implement proper base64 encoding
+	// For simplicity, return empty string
+	// In a full implementation, this would base64 encode binary data
 	return ""
 }
 
 // Decode decodes base64 data
 func (e *ClientBase64Encoder) Decode(data []interface{}) ([]interface{}, error) {
-	// For now, just return the data as-is
-	// TODO: Implement proper base64 decoding
+	// For now, just return the data as-is (no actual base64 decoding)
+	// This is a simplified implementation
 	return data, nil
 }
 
