@@ -16,6 +16,11 @@
 
 package types
 
+import (
+	"github.com/brenbar/telepact/lib/go/telepact/internal/generation"
+	"github.com/brenbar/telepact/lib/go/telepact/internal/validation"
+)
+
 // TUnion represents a union type with multiple variants
 type TUnion struct {
 	Name     string
@@ -26,23 +31,23 @@ func (t *TUnion) GetTypeParameterCount() int {
 	return 0
 }
 
-func (t *TUnion) Validate(value interface{}, typeParameters []*TTypeDeclaration, ctx *ValidateContext) []*ValidationFailure {
+func (t *TUnion) Validate(value interface{}, typeParameters []*TTypeDeclaration, ctx *validation.ValidateContext) []*validation.ValidationFailure {
 	obj, ok := value.(map[string]interface{})
 	if !ok {
-		return []*ValidationFailure{{Path: "", Message: "expected union object"}}
+		return []*validation.ValidationFailure{{Path: "", Message: "expected union object"}}
 	}
 	
 	// A union should have exactly one key
 	if len(obj) != 1 {
-		return []*ValidationFailure{{Path: "", Message: "union must have exactly one variant"}}
+		return []*validation.ValidationFailure{{Path: "", Message: "union must have exactly one variant"}}
 	}
 	
-	var failures []*ValidationFailure
+	var failures []*validation.ValidationFailure
 	
 	// TODO: Validate the variant value
 	for variantName := range obj {
 		if _, exists := t.Variants[variantName]; !exists {
-			failures = append(failures, &ValidationFailure{
+			failures = append(failures, &validation.ValidationFailure{
 				Path:    variantName,
 				Message: "unknown union variant",
 			})
@@ -52,7 +57,7 @@ func (t *TUnion) Validate(value interface{}, typeParameters []*TTypeDeclaration,
 	return failures
 }
 
-func (t *TUnion) GenerateRandomValue(blueprintValue interface{}, useBlueprintValue bool, typeParameters []*TTypeDeclaration, ctx *GenerateContext) interface{} {
+func (t *TUnion) GenerateRandomValue(blueprintValue interface{}, useBlueprintValue bool, typeParameters []*TTypeDeclaration, ctx *generation.GenerateContext) interface{} {
 	if useBlueprintValue {
 		if obj, ok := blueprintValue.(map[string]interface{}); ok {
 			return obj
@@ -71,6 +76,6 @@ func (t *TUnion) GenerateRandomValue(blueprintValue interface{}, useBlueprintVal
 	return result
 }
 
-func (t *TUnion) GetName(ctx *ValidateContext) string {
+func (t *TUnion) GetName(ctx *validation.ValidateContext) string {
 	return "Union"
 }

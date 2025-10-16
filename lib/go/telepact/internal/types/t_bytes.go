@@ -16,6 +16,11 @@
 
 package types
 
+import (
+	"github.com/brenbar/telepact/lib/go/telepact/internal/generation"
+	"github.com/brenbar/telepact/lib/go/telepact/internal/validation"
+)
+
 // TBytes represents a bytes type
 type TBytes struct{}
 
@@ -23,16 +28,16 @@ func (t *TBytes) GetTypeParameterCount() int {
 	return 0
 }
 
-func (t *TBytes) Validate(value interface{}, typeParameters []*TTypeDeclaration, ctx *ValidateContext) []*ValidationFailure {
+func (t *TBytes) Validate(value interface{}, typeParameters []*TTypeDeclaration, ctx *validation.ValidateContext) []*validation.ValidationFailure {
 	switch value.(type) {
 	case []byte, string:
 		return nil
 	default:
-		return []*ValidationFailure{{Path: "", Message: "expected bytes"}}
+		return []*validation.ValidationFailure{{Path: "", Message: "expected bytes"}}
 	}
 }
 
-func (t *TBytes) GenerateRandomValue(blueprintValue interface{}, useBlueprintValue bool, typeParameters []*TTypeDeclaration, ctx *GenerateContext) interface{} {
+func (t *TBytes) GenerateRandomValue(blueprintValue interface{}, useBlueprintValue bool, typeParameters []*TTypeDeclaration, ctx *generation.GenerateContext) interface{} {
 	if useBlueprintValue {
 		if b, ok := blueprintValue.([]byte); ok {
 			return b
@@ -45,6 +50,6 @@ func (t *TBytes) GenerateRandomValue(blueprintValue interface{}, useBlueprintVal
 	return []byte{0x01, 0x02, 0x03, 0x04}
 }
 
-func (t *TBytes) GetName(ctx *ValidateContext) string {
+func (t *TBytes) GetName(ctx *validation.ValidateContext) string {
 	return "Bytes"
 }

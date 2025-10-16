@@ -16,6 +16,11 @@
 
 package types
 
+import (
+	"github.com/brenbar/telepact/lib/go/telepact/internal/generation"
+	"github.com/brenbar/telepact/lib/go/telepact/internal/validation"
+)
+
 // TBoolean represents a boolean type
 type TBoolean struct{}
 
@@ -23,14 +28,14 @@ func (t *TBoolean) GetTypeParameterCount() int {
 	return 0
 }
 
-func (t *TBoolean) Validate(value interface{}, typeParameters []*TTypeDeclaration, ctx *ValidateContext) []*ValidationFailure {
+func (t *TBoolean) Validate(value interface{}, typeParameters []*TTypeDeclaration, ctx *validation.ValidateContext) []*validation.ValidationFailure {
 	if _, ok := value.(bool); !ok {
-		return []*ValidationFailure{{Path: "", Message: "expected boolean"}}
+		return []*validation.ValidationFailure{{Path: "", Message: "expected boolean"}}
 	}
 	return nil
 }
 
-func (t *TBoolean) GenerateRandomValue(blueprintValue interface{}, useBlueprintValue bool, typeParameters []*TTypeDeclaration, ctx *GenerateContext) interface{} {
+func (t *TBoolean) GenerateRandomValue(blueprintValue interface{}, useBlueprintValue bool, typeParameters []*TTypeDeclaration, ctx *generation.GenerateContext) interface{} {
 	if useBlueprintValue {
 		if b, ok := blueprintValue.(bool); ok {
 			return b
@@ -40,6 +45,6 @@ func (t *TBoolean) GenerateRandomValue(blueprintValue interface{}, useBlueprintV
 	return true
 }
 
-func (t *TBoolean) GetName(ctx *ValidateContext) string {
+func (t *TBoolean) GetName(ctx *validation.ValidateContext) string {
 	return "Boolean"
 }

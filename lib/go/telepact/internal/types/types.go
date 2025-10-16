@@ -16,12 +16,17 @@
 
 package types
 
+import (
+	"github.com/brenbar/telepact/lib/go/telepact/internal/generation"
+	"github.com/brenbar/telepact/lib/go/telepact/internal/validation"
+)
+
 // TType is the base interface for all Telepact types
 type TType interface {
 	GetTypeParameterCount() int
-	Validate(value interface{}, typeParameters []*TTypeDeclaration, ctx *ValidateContext) []*ValidationFailure
-	GenerateRandomValue(blueprintValue interface{}, useBlueprintValue bool, typeParameters []*TTypeDeclaration, ctx *GenerateContext) interface{}
-	GetName(ctx *ValidateContext) string
+	Validate(value interface{}, typeParameters []*TTypeDeclaration, ctx *validation.ValidateContext) []*validation.ValidationFailure
+	GenerateRandomValue(blueprintValue interface{}, useBlueprintValue bool, typeParameters []*TTypeDeclaration, ctx *generation.GenerateContext) interface{}
+	GetName(ctx *validation.ValidateContext) string
 }
 
 // TTypeDeclaration represents a type declaration
@@ -35,24 +40,4 @@ type TFieldDeclaration struct {
 	Type         TType
 	Optional     bool
 	DefaultValue interface{}
-}
-
-// ValidateContext provides context for validation
-type ValidateContext struct {
-	// Placeholder
-}
-
-// ValidationFailure represents a validation failure
-type ValidationFailure struct {
-	Path    string
-	Message string
-}
-
-// GenerateContext provides context for generation
-type GenerateContext struct {
-	IncludeOptionalFields           bool
-	RandomizeOptionalFieldGeneration bool
-	AlwaysIncludeRequiredFields     bool
-	FunctionName                    string
-	// Random generator would go here
 }

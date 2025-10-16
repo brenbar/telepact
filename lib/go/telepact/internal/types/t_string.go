@@ -16,6 +16,11 @@
 
 package types
 
+import (
+	"github.com/brenbar/telepact/lib/go/telepact/internal/generation"
+	"github.com/brenbar/telepact/lib/go/telepact/internal/validation"
+)
+
 // TString represents a string type
 type TString struct{}
 
@@ -23,14 +28,14 @@ func (t *TString) GetTypeParameterCount() int {
 	return 0
 }
 
-func (t *TString) Validate(value interface{}, typeParameters []*TTypeDeclaration, ctx *ValidateContext) []*ValidationFailure {
+func (t *TString) Validate(value interface{}, typeParameters []*TTypeDeclaration, ctx *validation.ValidateContext) []*validation.ValidationFailure {
 	if _, ok := value.(string); !ok {
-		return []*ValidationFailure{{Path: "", Message: "expected string"}}
+		return []*validation.ValidationFailure{{Path: "", Message: "expected string"}}
 	}
 	return nil
 }
 
-func (t *TString) GenerateRandomValue(blueprintValue interface{}, useBlueprintValue bool, typeParameters []*TTypeDeclaration, ctx *GenerateContext) interface{} {
+func (t *TString) GenerateRandomValue(blueprintValue interface{}, useBlueprintValue bool, typeParameters []*TTypeDeclaration, ctx *generation.GenerateContext) interface{} {
 	if useBlueprintValue {
 		if str, ok := blueprintValue.(string); ok {
 			return str
@@ -40,6 +45,6 @@ func (t *TString) GenerateRandomValue(blueprintValue interface{}, useBlueprintVa
 	return "alpha"
 }
 
-func (t *TString) GetName(ctx *ValidateContext) string {
+func (t *TString) GetName(ctx *validation.ValidateContext) string {
 	return "String"
 }

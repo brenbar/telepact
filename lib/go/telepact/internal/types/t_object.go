@@ -16,6 +16,11 @@
 
 package types
 
+import (
+	"github.com/brenbar/telepact/lib/go/telepact/internal/generation"
+	"github.com/brenbar/telepact/lib/go/telepact/internal/validation"
+)
+
 // TObject represents a map/object type with value type
 type TObject struct{}
 
@@ -23,13 +28,13 @@ func (t *TObject) GetTypeParameterCount() int {
 	return 1
 }
 
-func (t *TObject) Validate(value interface{}, typeParameters []*TTypeDeclaration, ctx *ValidateContext) []*ValidationFailure {
+func (t *TObject) Validate(value interface{}, typeParameters []*TTypeDeclaration, ctx *validation.ValidateContext) []*validation.ValidationFailure {
 	obj, ok := value.(map[string]interface{})
 	if !ok {
-		return []*ValidationFailure{{Path: "", Message: "expected object"}}
+		return []*validation.ValidationFailure{{Path: "", Message: "expected object"}}
 	}
 	
-	var failures []*ValidationFailure
+	var failures []*validation.ValidationFailure
 	
 	// TODO: Validate each value against type parameter
 	for key := range obj {
@@ -40,7 +45,7 @@ func (t *TObject) Validate(value interface{}, typeParameters []*TTypeDeclaration
 	return failures
 }
 
-func (t *TObject) GenerateRandomValue(blueprintValue interface{}, useBlueprintValue bool, typeParameters []*TTypeDeclaration, ctx *GenerateContext) interface{} {
+func (t *TObject) GenerateRandomValue(blueprintValue interface{}, useBlueprintValue bool, typeParameters []*TTypeDeclaration, ctx *generation.GenerateContext) interface{} {
 	result := make(map[string]interface{})
 	
 	// TODO: Generate random object values
@@ -53,6 +58,6 @@ func (t *TObject) GenerateRandomValue(blueprintValue interface{}, useBlueprintVa
 	return result
 }
 
-func (t *TObject) GetName(ctx *ValidateContext) string {
+func (t *TObject) GetName(ctx *validation.ValidateContext) string {
 	return "Object"
 }

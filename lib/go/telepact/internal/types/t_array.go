@@ -16,6 +16,11 @@
 
 package types
 
+import (
+	"github.com/brenbar/telepact/lib/go/telepact/internal/generation"
+	"github.com/brenbar/telepact/lib/go/telepact/internal/validation"
+)
+
 // TArray represents an array type with element type
 type TArray struct{}
 
@@ -23,13 +28,13 @@ func (t *TArray) GetTypeParameterCount() int {
 	return 1
 }
 
-func (t *TArray) Validate(value interface{}, typeParameters []*TTypeDeclaration, ctx *ValidateContext) []*ValidationFailure {
+func (t *TArray) Validate(value interface{}, typeParameters []*TTypeDeclaration, ctx *validation.ValidateContext) []*validation.ValidationFailure {
 	arr, ok := value.([]interface{})
 	if !ok {
-		return []*ValidationFailure{{Path: "", Message: "expected array"}}
+		return []*validation.ValidationFailure{{Path: "", Message: "expected array"}}
 	}
 	
-	var failures []*ValidationFailure
+	var failures []*validation.ValidationFailure
 	
 	// TODO: Validate each element against type parameter
 	for i := range arr {
@@ -40,7 +45,7 @@ func (t *TArray) Validate(value interface{}, typeParameters []*TTypeDeclaration,
 	return failures
 }
 
-func (t *TArray) GenerateRandomValue(blueprintValue interface{}, useBlueprintValue bool, typeParameters []*TTypeDeclaration, ctx *GenerateContext) interface{} {
+func (t *TArray) GenerateRandomValue(blueprintValue interface{}, useBlueprintValue bool, typeParameters []*TTypeDeclaration, ctx *generation.GenerateContext) interface{} {
 	result := make([]interface{}, 0)
 	
 	// TODO: Generate random array elements
@@ -53,6 +58,6 @@ func (t *TArray) GenerateRandomValue(blueprintValue interface{}, useBlueprintVal
 	return result
 }
 
-func (t *TArray) GetName(ctx *ValidateContext) string {
+func (t *TArray) GetName(ctx *validation.ValidateContext) string {
 	return "Array"
 }

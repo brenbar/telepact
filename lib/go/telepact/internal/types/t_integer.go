@@ -16,6 +16,11 @@
 
 package types
 
+import (
+	"github.com/brenbar/telepact/lib/go/telepact/internal/generation"
+	"github.com/brenbar/telepact/lib/go/telepact/internal/validation"
+)
+
 // TInteger represents an integer type
 type TInteger struct{}
 
@@ -23,23 +28,23 @@ func (t *TInteger) GetTypeParameterCount() int {
 	return 0
 }
 
-func (t *TInteger) Validate(value interface{}, typeParameters []*TTypeDeclaration, ctx *ValidateContext) []*ValidationFailure {
+func (t *TInteger) Validate(value interface{}, typeParameters []*TTypeDeclaration, ctx *validation.ValidateContext) []*validation.ValidationFailure {
 	switch v := value.(type) {
 	case int, int32, int64, float64:
 		// In JSON, numbers come as float64
 		if f, ok := value.(float64); ok {
 			if f != float64(int64(f)) {
-				return []*ValidationFailure{{Path: "", Message: "expected integer"}}
+				return []*validation.ValidationFailure{{Path: "", Message: "expected integer"}}
 			}
 		}
 		return nil
 	default:
 		_ = v
-		return []*ValidationFailure{{Path: "", Message: "expected integer"}}
+		return []*validation.ValidationFailure{{Path: "", Message: "expected integer"}}
 	}
 }
 
-func (t *TInteger) GenerateRandomValue(blueprintValue interface{}, useBlueprintValue bool, typeParameters []*TTypeDeclaration, ctx *GenerateContext) interface{} {
+func (t *TInteger) GenerateRandomValue(blueprintValue interface{}, useBlueprintValue bool, typeParameters []*TTypeDeclaration, ctx *generation.GenerateContext) interface{} {
 	if useBlueprintValue {
 		if i, ok := blueprintValue.(int); ok {
 			return i
@@ -52,6 +57,6 @@ func (t *TInteger) GenerateRandomValue(blueprintValue interface{}, useBlueprintV
 	return 42
 }
 
-func (t *TInteger) GetName(ctx *ValidateContext) string {
+func (t *TInteger) GetName(ctx *validation.ValidateContext) string {
 	return "Integer"
 }

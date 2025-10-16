@@ -16,6 +16,11 @@
 
 package types
 
+import (
+	"github.com/brenbar/telepact/lib/go/telepact/internal/generation"
+	"github.com/brenbar/telepact/lib/go/telepact/internal/validation"
+)
+
 // TAny represents the any type (accepts any value)
 type TAny struct{}
 
@@ -23,12 +28,12 @@ func (t *TAny) GetTypeParameterCount() int {
 	return 0
 }
 
-func (t *TAny) Validate(value interface{}, typeParameters []*TTypeDeclaration, ctx *ValidateContext) []*ValidationFailure {
+func (t *TAny) Validate(value interface{}, typeParameters []*TTypeDeclaration, ctx *validation.ValidateContext) []*validation.ValidationFailure {
 	// Any accepts all values
 	return nil
 }
 
-func (t *TAny) GenerateRandomValue(blueprintValue interface{}, useBlueprintValue bool, typeParameters []*TTypeDeclaration, ctx *GenerateContext) interface{} {
+func (t *TAny) GenerateRandomValue(blueprintValue interface{}, useBlueprintValue bool, typeParameters []*TTypeDeclaration, ctx *generation.GenerateContext) interface{} {
 	if useBlueprintValue {
 		return blueprintValue
 	}
@@ -36,6 +41,6 @@ func (t *TAny) GenerateRandomValue(blueprintValue interface{}, useBlueprintValue
 	return "any"
 }
 
-func (t *TAny) GetName(ctx *ValidateContext) string {
+func (t *TAny) GetName(ctx *validation.ValidateContext) string {
 	return "Any"
 }

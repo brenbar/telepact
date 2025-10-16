@@ -16,6 +16,11 @@
 
 package types
 
+import (
+	"github.com/brenbar/telepact/lib/go/telepact/internal/generation"
+	"github.com/brenbar/telepact/lib/go/telepact/internal/validation"
+)
+
 // TSelect represents a select type (runtime type selection)
 type TSelect struct {
 	PossibleSelects map[string]interface{}
@@ -25,16 +30,16 @@ func (t *TSelect) GetTypeParameterCount() int {
 	return 0
 }
 
-func (t *TSelect) Validate(value interface{}, typeParameters []*TTypeDeclaration, ctx *ValidateContext) []*ValidationFailure {
+func (t *TSelect) Validate(value interface{}, typeParameters []*TTypeDeclaration, ctx *validation.ValidateContext) []*validation.ValidationFailure {
 	// TODO: Implement select validation
 	return nil
 }
 
-func (t *TSelect) GenerateRandomValue(blueprintValue interface{}, useBlueprintValue bool, typeParameters []*TTypeDeclaration, ctx *GenerateContext) interface{} {
+func (t *TSelect) GenerateRandomValue(blueprintValue interface{}, useBlueprintValue bool, typeParameters []*TTypeDeclaration, ctx *generation.GenerateContext) interface{} {
 	// TODO: Implement select random generation
 	return make(map[string]interface{})
 }
 
-func (t *TSelect) GetName(ctx *ValidateContext) string {
+func (t *TSelect) GetName(ctx *validation.ValidateContext) string {
 	return "Object"
 }

@@ -16,6 +16,11 @@
 
 package types
 
+import (
+	"github.com/brenbar/telepact/lib/go/telepact/internal/generation"
+	"github.com/brenbar/telepact/lib/go/telepact/internal/validation"
+)
+
 // TNumber represents a number type (floating point)
 type TNumber struct{}
 
@@ -23,16 +28,16 @@ func (t *TNumber) GetTypeParameterCount() int {
 	return 0
 }
 
-func (t *TNumber) Validate(value interface{}, typeParameters []*TTypeDeclaration, ctx *ValidateContext) []*ValidationFailure {
+func (t *TNumber) Validate(value interface{}, typeParameters []*TTypeDeclaration, ctx *validation.ValidateContext) []*validation.ValidationFailure {
 	switch value.(type) {
 	case int, int32, int64, float32, float64:
 		return nil
 	default:
-		return []*ValidationFailure{{Path: "", Message: "expected number"}}
+		return []*validation.ValidationFailure{{Path: "", Message: "expected number"}}
 	}
 }
 
-func (t *TNumber) GenerateRandomValue(blueprintValue interface{}, useBlueprintValue bool, typeParameters []*TTypeDeclaration, ctx *GenerateContext) interface{} {
+func (t *TNumber) GenerateRandomValue(blueprintValue interface{}, useBlueprintValue bool, typeParameters []*TTypeDeclaration, ctx *generation.GenerateContext) interface{} {
 	if useBlueprintValue {
 		if num, ok := blueprintValue.(float64); ok {
 			return num
@@ -45,6 +50,6 @@ func (t *TNumber) GenerateRandomValue(blueprintValue interface{}, useBlueprintVa
 	return 3.14159
 }
 
-func (t *TNumber) GetName(ctx *ValidateContext) string {
+func (t *TNumber) GetName(ctx *validation.ValidateContext) string {
 	return "Number"
 }
