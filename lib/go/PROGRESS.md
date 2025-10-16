@@ -10,18 +10,19 @@ This document tracks the progress of porting the Python Telepact library (lib/py
 - 8 packages (main + 7 internal packages)
 
 **Go Port Status:**
-- 63 Go files created (out of ~156 needed)
+- 65 Go files created (out of ~156 needed)
 - Core structure and interfaces established
-- Complete type system implemented (11 types)
-- All type definitions complete (including TError, THeaders)
+- Complete type system implemented (15 types)
+- All type definitions complete (including TError, THeaders, TMockCall, TMockStub)
 - Validation functions for all types implemented
 - Generation functions for all types implemented
 - Utility functions for struct field selection
 - Validation error types
+- Binary encoder interfaces defined
 - Unit tests passing
 - Project builds successfully
 
-**Completion: ~40% (63/156 files)**
+**Completion: ~42% (65/156 files)**
 
 ## Project Structure
 
@@ -79,8 +80,8 @@ lib/go/
 - [x] TFieldDeclaration.py → tfield_declaration.go (complete)
 - [x] THeaders.py → theaders.go (complete)
 - [x] TInteger.py → tinteger.go (complete)
-- [ ] TMockCall.py → tmock_call.go (TODO - mocking feature)
-- [ ] TMockStub.py → tmock_stub.go (TODO - mocking feature)
+- [x] TMockCall.py → tmock_call.go (structure complete, validation/generation stubs)
+- [x] TMockStub.py → tmock_stub.go (structure complete, validation/generation stubs)
 - [x] TNumber.py → tnumber.go (complete)
 - [x] TObject.py → tobject.go (complete with validation and generation)
 - [x] TSelect.py → tselect.go (complete with validation and generation)

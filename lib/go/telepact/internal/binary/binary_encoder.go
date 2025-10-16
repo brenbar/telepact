@@ -16,12 +16,20 @@
 
 package binary
 
-// BinaryEncoder is an interface for binary encoding
+// BinaryEncoder interface for encoding/decoding binary messages
 type BinaryEncoder interface {
-	// TODO: Add methods as needed
+	// Encode encodes a message to binary format
+	Encode(message []interface{}) []interface{}
+	
+	// Decode decodes a message from binary format
+	Decode(message []interface{}) []interface{}
 }
 
-// Base64Encoder is an interface for base64 encoding
+// Base64Encoder interface for encoding/decoding base64 messages
 type Base64Encoder interface {
-	// TODO: Add methods as needed
+	// Encode encodes a message to base64 format
+	Encode(message []interface{}) []interface{}
+	
+	// Decode decodes a message from base64 format
+	Decode(message []interface{}) []interface{}
 }
