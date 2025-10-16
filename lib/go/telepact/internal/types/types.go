@@ -50,5 +50,9 @@ type ValidationFailure struct {
 
 // GenerateContext provides context for generation
 type GenerateContext struct {
-	// Placeholder
+	IncludeOptionalFields           bool
+	RandomizeOptionalFieldGeneration bool
+	AlwaysIncludeRequiredFields     bool
+	FunctionName                    string
+	// Random generator would go here
 }
