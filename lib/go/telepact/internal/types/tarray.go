@@ -33,14 +33,18 @@ func (t *TArray) GetTypeParameterCount() int {
 
 // Validate validates a value as an array
 func (t *TArray) Validate(value interface{}, typeParameters []*TTypeDeclaration, ctx *validation.ValidateContext) []*validation.ValidationFailure {
-	// TODO: Implement validateArray from internal/validation
-	return nil
+	nestedTypeDeclaration := typeParameters[0]
+	return validation.ValidateArrayType(value, func(element interface{}) []*validation.ValidationFailure {
+		return nestedTypeDeclaration.Validate(element, ctx)
+	}, ctx)
 }
 
 // GenerateRandomValue generates a random array value
 func (t *TArray) GenerateRandomValue(blueprintValue interface{}, useBlueprintValue bool, typeParameters []*TTypeDeclaration, ctx *generation.GenerateContext) interface{} {
-	// TODO: Implement generateRandomArray from internal/generation
-	return []interface{}{}
+	nestedTypeDeclaration := typeParameters[0]
+	return generation.GenerateRandomArrayType(blueprintValue, useBlueprintValue, func(bpValue interface{}, useBp bool) interface{} {
+		return nestedTypeDeclaration.GenerateRandomValue(bpValue, useBp, ctx)
+	}, ctx)
 }
 
 // GetName returns the type name

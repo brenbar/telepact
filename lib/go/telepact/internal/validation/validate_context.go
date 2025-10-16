@@ -18,12 +18,24 @@ package validation
 
 // ValidateContext provides context for validation
 type ValidateContext struct {
-	// TODO: Add fields as needed for validation context
+	Path             []string
+	Select           map[string]interface{}
+	Fn               *string
+	CoerceBase64     bool
+	Base64Coercions  map[string]interface{}
+	BytesCoercions   map[string]interface{}
 }
 
 // NewValidateContext creates a new ValidateContext
-func NewValidateContext() *ValidateContext {
-	return &ValidateContext{}
+func NewValidateContext(selectMap map[string]interface{}, fn *string, coerceBase64 bool) *ValidateContext {
+	return &ValidateContext{
+		Path:            []string{},
+		Select:          selectMap,
+		Fn:              fn,
+		CoerceBase64:    coerceBase64,
+		Base64Coercions: make(map[string]interface{}),
+		BytesCoercions:  make(map[string]interface{}),
+	}
 }
 
 // ValidationFailure represents a validation failure

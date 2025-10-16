@@ -28,22 +28,23 @@ type TObject struct{}
 
 // GetTypeParameterCount returns the number of type parameters
 func (t *TObject) GetTypeParameterCount() int {
-	return 0
+	return 1
 }
 
 // Validate validates a value as an object
 func (t *TObject) Validate(value interface{}, typeParameters []*TTypeDeclaration, ctx *validation.ValidateContext) []*validation.ValidationFailure {
-	// TODO: Implement validateObject from internal/validation
-	if _, ok := value.(map[string]interface{}); !ok {
-		return validation.GetTypeUnexpectedValidationFailure([]interface{}{}, value, objectName)
-	}
-	return nil
+	nestedTypeDeclaration := typeParameters[0]
+	return validation.ValidateObjectType(value, func(element interface{}) []*validation.ValidationFailure {
+		return nestedTypeDeclaration.Validate(element, ctx)
+	}, ctx)
 }
 
 // GenerateRandomValue generates a random object value
 func (t *TObject) GenerateRandomValue(blueprintValue interface{}, useBlueprintValue bool, typeParameters []*TTypeDeclaration, ctx *generation.GenerateContext) interface{} {
-	// TODO: Implement generateRandomObject from internal/generation
-	return make(map[string]interface{})
+	nestedTypeDeclaration := typeParameters[0]
+	return generation.GenerateRandomObjectType(blueprintValue, useBlueprintValue, func(bpValue interface{}, useBp bool) interface{} {
+		return nestedTypeDeclaration.GenerateRandomValue(bpValue, useBp, ctx)
+	}, ctx)
 }
 
 // GetName returns the type name

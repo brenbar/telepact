@@ -16,16 +16,33 @@
 
 package types
 
+import (
+	"github.com/brenbar/telepact/lib/go/telepact/internal/validation"
+	"github.com/brenbar/telepact/lib/go/telepact/internal/generation"
+)
+
 // TTypeDeclaration represents a type declaration
 type TTypeDeclaration struct {
 	Type           TType
+	Nullable       bool
 	TypeParameters []*TTypeDeclaration
 }
 
 // NewTTypeDeclaration creates a new TTypeDeclaration
-func NewTTypeDeclaration(ttype TType, typeParameters []*TTypeDeclaration) *TTypeDeclaration {
+func NewTTypeDeclaration(ttype TType, nullable bool, typeParameters []*TTypeDeclaration) *TTypeDeclaration {
 	return &TTypeDeclaration{
 		Type:           ttype,
+		Nullable:       nullable,
 		TypeParameters: typeParameters,
 	}
+}
+
+// Validate validates a value against this type declaration
+func (td *TTypeDeclaration) Validate(value interface{}, ctx *validation.ValidateContext) []*validation.ValidationFailure {
+	return ValidateValueOfType(value, td.Type, td.Nullable, td.TypeParameters, ctx)
+}
+
+// GenerateRandomValue generates a random value for this type declaration
+func (td *TTypeDeclaration) GenerateRandomValue(blueprintValue interface{}, useBlueprintValue bool, ctx *generation.GenerateContext) interface{} {
+	return GenerateRandomValueOfType(blueprintValue, useBlueprintValue, td.Type, td.Nullable, td.TypeParameters, ctx)
 }

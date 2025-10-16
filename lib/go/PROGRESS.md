@@ -10,15 +10,15 @@ This document tracks the progress of porting the Python Telepact library (lib/py
 - 8 packages (main + 7 internal packages)
 
 **Go Port Status:**
-- 42 Go files created (out of ~156 needed)
+- 50 Go files created (out of ~156 needed)
 - Core structure and interfaces established
 - Basic type system implemented (11 types complete)
-- Validation functions for primitive types implemented
-- Generation functions for primitive types implemented
+- Validation functions for primitive and complex types implemented
+- Generation functions for primitive and complex types implemented
 - Unit tests passing
 - Project builds successfully
 
-**Completion: ~27% (42/156 files)**
+**Completion: ~32% (50/156 files)**
 
 ## Project Structure
 
@@ -69,7 +69,7 @@ lib/go/
 
 - [x] TType.py → ttype.go (interface defined)
 - [x] TAny.py → tany.go (complete)
-- [x] TArray.py → tarray.go (complete structure, validation/generation stubs)
+- [x] TArray.py → tarray.go (complete with validation and generation)
 - [x] TBoolean.py → tboolean.go (complete)
 - [x] TBytes.py → tbytes.go (complete)
 - [ ] TError.py → terror.go (TODO - needs implementation)
@@ -79,11 +79,11 @@ lib/go/
 - [ ] TMockCall.py → tmock_call.go (TODO - mocking feature)
 - [ ] TMockStub.py → tmock_stub.go (TODO - mocking feature)
 - [x] TNumber.py → tnumber.go (complete)
-- [x] TObject.py → tobject.go (complete)
+- [x] TObject.py → tobject.go (complete with validation and generation)
 - [x] TSelect.py → tselect.go (complete structure, validation/generation stubs)
 - [x] TString.py → tstring.go (complete)
 - [x] TStruct.py → tstruct.go (complete structure, validation/generation stubs)
-- [x] TTypeDeclaration.py → ttype_declaration.go (complete)
+- [x] TTypeDeclaration.py → ttype_declaration.go (complete with Validate and GenerateRandomValue methods)
 - [x] TUnion.py → tunion.go (complete structure, validation/generation stubs)
 - [x] GetType.py → get_type.go (in internal/util)
 
@@ -104,18 +104,18 @@ Schema parsing implementation - ~30 files
 
 Validation implementation - ~26 files
 
-- [x] ValidateContext.py → validate_context.go (complete with ValidationFailure)
+- [x] ValidateContext.py → validate_context.go (complete with ValidationFailure and full context)
 - [x] GetTypeUnexpectedValidationFailure.py → get_type_unexpected_validation_failure.go (complete)
 - [x] ValidateString.py → validate_string.go (complete)
 - [x] ValidateInteger.py → validate_integer.go (complete)
 - [x] ValidateBoolean.py → validate_boolean.go (complete)
 - [x] ValidateNumber.py → validate_number.go (complete)
 - [x] ValidateBytes.py → validate_bytes.go (complete)
-- [ ] ValidateValueOfType.py
+- [x] ValidateArray.py → validate_array_helper.go (complete)
+- [x] ValidateObject.py → validate_object_helper.go (complete)
+- [ ] ValidateValueOfType.py (implemented in types package)
 - [ ] ValidateStruct.py
 - [ ] ValidateUnion.py
-- [ ] ValidateArray.py
-- [ ] ValidateObject.py
 - [ ] And other validation files...
 
 ### Internal Binary (lib/go/telepact/internal/binary/)
@@ -134,16 +134,17 @@ Binary encoding/decoding - ~40 files
 
 Random value generation - ~15 files
 
-- [x] GenerateContext.py → generate_context.go (complete with RandomGenerator interface)
+- [x] GenerateContext.py → generate_context.go (complete with RandomGenerator interface and full context)
 - [x] GenerateRandomString.py → generate_random_string.go (complete)
 - [x] GenerateRandomInteger.py → generate_random_integer.go (complete)
 - [x] GenerateRandomBoolean.py → generate_random_boolean.go (complete)
 - [x] GenerateRandomNumber.py → generate_random_number.go (complete)
 - [x] GenerateRandomBytes.py → generate_random_bytes.go (complete)
-- [ ] GenerateRandomValueOfType.py
+- [x] GenerateRandomArray.py → generate_random_array_helper.go (complete)
+- [x] GenerateRandomObject.py → generate_random_object_helper.go (complete)
+- [ ] GenerateRandomValueOfType.py (implemented in types package)
 - [ ] GenerateRandomStruct.py
-- [ ] GenerateRandomArray.py
-- [ ] GenerateRandomObject.py
+- [ ] GenerateRandomUnion.py
 - [ ] And other generation files...
 
 ### Internal Mock (lib/go/telepact/internal/mock/)
@@ -157,6 +158,8 @@ Mocking utilities - ~8 files
 
 ### Other Internal Files
 
+- [x] ValidateValueOfType.py → validate_value_of_type.go (in types package)
+- [x] GenerateRandomValueOfType.py → generate_random_value_of_type.go (in types package)
 - [ ] ClientHandleMessage.py → client_handle_message.go
 - [ ] DeserializeInternal.py → deserialize_internal.go
 - [ ] SerializeInternal.py → serialize_internal.go
