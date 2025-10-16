@@ -53,8 +53,14 @@ func (t *TStruct) Validate(value interface{}, typeParameters []*TTypeDeclaration
 			continue
 		}
 		
-		// TODO: Validate field value against field type
-		_ = fieldValue
+		// Validate field value against field type
+		fieldFailures := fieldDecl.TypeDeclaration.Validate(fieldValue, ctx)
+		for _, failure := range fieldFailures {
+			failures = append(failures, &validation.ValidationFailure{
+				Path:    fieldName + "." + failure.Path,
+				Message: failure.Message,
+			})
+		}
 	}
 	
 	return failures
@@ -63,11 +69,17 @@ func (t *TStruct) Validate(value interface{}, typeParameters []*TTypeDeclaration
 func (t *TStruct) GenerateRandomValue(blueprintValue interface{}, useBlueprintValue bool, typeParameters []*TTypeDeclaration, ctx *generation.GenerateContext) interface{} {
 	result := make(map[string]interface{})
 	
-	// TODO: Generate random values for each field
+	// Generate random values for each field
 	for fieldName, fieldDecl := range t.Fields {
 		if !fieldDecl.Optional || ctx.IncludeOptionalFields {
 			// Generate value for field
-			result[fieldName] = fieldDecl.DefaultValue
+			var blueprintFieldValue interface{}
+			if useBlueprintValue {
+				if blueprintMap, ok := blueprintValue.(map[string]interface{}); ok {
+					blueprintFieldValue = blueprintMap[fieldName]
+				}
+			}
+			result[fieldName] = fieldDecl.TypeDeclaration.GenerateRandomValue(blueprintFieldValue, useBlueprintValue, ctx)
 		}
 	}
 	

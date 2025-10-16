@@ -29,15 +29,37 @@ type TType interface {
 	GetName(ctx *validation.ValidateContext) string
 }
 
-// TTypeDeclaration represents a type declaration
+// TTypeDeclaration represents a type declaration with parameters
 type TTypeDeclaration struct {
-	// Placeholder
+	Type           TType
+	Nullable       bool
+	TypeParameters []*TTypeDeclaration
 }
 
-// TFieldDeclaration represents a field declaration
+// Validate validates a value against this type declaration
+func (td *TTypeDeclaration) Validate(value interface{}, ctx *validation.ValidateContext) []*validation.ValidationFailure {
+	// TODO: Implement full validation with nullable handling
+	if value == nil && td.Nullable {
+		return nil
+	}
+	if value == nil && !td.Nullable {
+		return []*validation.ValidationFailure{{Path: "", Message: "value cannot be null"}}
+	}
+	return td.Type.Validate(value, td.TypeParameters, ctx)
+}
+
+// GenerateRandomValue generates a random value for this type declaration
+func (td *TTypeDeclaration) GenerateRandomValue(blueprintValue interface{}, useBlueprintValue bool, ctx *generation.GenerateContext) interface{} {
+	// TODO: Implement full generation with nullable handling
+	if td.Nullable {
+		// Simplified: always generate non-null for now
+	}
+	return td.Type.GenerateRandomValue(blueprintValue, useBlueprintValue, td.TypeParameters, ctx)
+}
+
+// TFieldDeclaration represents a field declaration in a struct
 type TFieldDeclaration struct {
-	Name         string
-	Type         TType
-	Optional     bool
-	DefaultValue interface{}
+	FieldName       string
+	TypeDeclaration *TTypeDeclaration
+	Optional        bool
 }
