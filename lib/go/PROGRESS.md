@@ -10,12 +10,13 @@ This document tracks the progress of porting the Python Telepact library (lib/py
 - 8 packages (main + 7 internal packages)
 
 **Go Port Status:**
-- 27 Go files created (out of ~156 needed)
+- 30 Go files created (out of ~156 needed)
 - Core structure and interfaces established
-- Basic type system implemented
+- Basic type system implemented (13 types complete)
+- Unit tests passing
 - Project builds successfully
 
-**Completion: ~17% (27/156 files)**
+**Completion: ~19% (30/156 files)**
 
 ## Project Structure
 
@@ -77,7 +78,7 @@ lib/go/
 - [ ] TMockStub.py → tmock_stub.go
 - [x] TNumber.py → tnumber.go (complete)
 - [x] TObject.py → tobject.go (complete)
-- [ ] TSelect.py → tselect.go
+- [x] TSelect.py → tselect.go (complete structure, validation/generation stubs)
 - [x] TString.py → tstring.go (complete)
 - [x] TStruct.py → tstruct.go (complete structure, validation/generation stubs)
 - [x] TTypeDeclaration.py → ttype_declaration.go (complete)
@@ -157,7 +158,9 @@ Mocking utilities - ~8 files
 - [x] go.mod (created with msgpack dependency)
 - [x] Makefile (basic targets: build, test, clean, fmt, vet)
 - [x] README.md (usage examples and documentation)
-- [ ] Basic unit tests
+- [x] Package documentation (doc.go)
+- [x] Basic unit tests (5 tests passing)
+- [x] Added to root Makefile (go, clean-go, test-go targets)
 - [ ] Integration with test/runner
 - [x] .gitignore updated for Go artifacts
 
