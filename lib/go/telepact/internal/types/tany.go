@@ -38,8 +38,7 @@ func (t *TAny) Validate(value interface{}, typeParameters []*TTypeDeclaration, c
 
 // GenerateRandomValue generates a random any value
 func (t *TAny) GenerateRandomValue(blueprintValue interface{}, useBlueprintValue bool, typeParameters []*TTypeDeclaration, ctx *generation.GenerateContext) interface{} {
-	// TODO: Implement generateRandomAny from internal/generation
-	return nil
+	return generation.GenerateRandomAny(ctx)
 }
 
 // GetName returns the type name

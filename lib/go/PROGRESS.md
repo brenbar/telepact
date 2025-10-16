@@ -10,7 +10,7 @@ This document tracks the progress of porting the Python Telepact library (lib/py
 - 8 packages (main + 7 internal packages)
 
 **Go Port Status:**
-- 56 Go files created (out of ~156 needed)
+- 57 Go files created (out of ~156 needed)
 - Core structure and interfaces established
 - Complete type system implemented (11 types)
 - Validation functions for all types implemented
@@ -18,7 +18,7 @@ This document tracks the progress of porting the Python Telepact library (lib/py
 - Unit tests passing
 - Project builds successfully
 
-**Completion: ~36% (56/156 files)**
+**Completion: ~37% (57/156 files)**
 
 ## Project Structure
 
@@ -68,7 +68,7 @@ lib/go/
 ### Internal Types (lib/go/telepact/internal/types/)
 
 - [x] TType.py → ttype.go (interface defined)
-- [x] TAny.py → tany.go (complete)
+- [x] TAny.py → tany.go (complete with generation)
 - [x] TArray.py → tarray.go (complete with validation and generation)
 - [x] TBoolean.py → tboolean.go (complete)
 - [x] TBytes.py → tbytes.go (complete)
@@ -142,6 +142,7 @@ Random value generation - ~15 files
 - [x] GenerateRandomBoolean.py → generate_random_boolean.go (complete)
 - [x] GenerateRandomNumber.py → generate_random_number.go (complete)
 - [x] GenerateRandomBytes.py → generate_random_bytes.go (complete)
+- [x] GenerateRandomAny.py → generate_random_any.go (complete)
 - [x] GenerateRandomArray.py → generate_random_array_helper.go (complete)
 - [x] GenerateRandomObject.py → generate_random_object_helper.go (complete)
 - [x] GenerateRandomStruct.py → generate_random_struct_helper.go (complete)
