@@ -42,14 +42,12 @@ func (t *TSelect) GetTypeParameterCount() int {
 
 // Validate validates a value as a select
 func (t *TSelect) Validate(value interface{}, typeParameters []*TTypeDeclaration, ctx *validation.ValidateContext) []*validation.ValidationFailure {
-	// TODO: Implement validateSelect from internal/validation
-	return nil
+	return validation.ValidateSelectType(value, t.PossibleSelects, ctx)
 }
 
 // GenerateRandomValue generates a random select value
 func (t *TSelect) GenerateRandomValue(blueprintValue interface{}, useBlueprintValue bool, typeParameters []*TTypeDeclaration, ctx *generation.GenerateContext) interface{} {
-	// TODO: Implement generateRandomSelect from internal/generation
-	return nil
+	return generation.GenerateRandomSelectType(t.PossibleSelects, ctx)
 }
 
 // GetName returns the type name

@@ -17,6 +17,7 @@
 package types
 
 import (
+	"sort"
 	"github.com/brenbar/telepact/lib/go/telepact/internal/validation"
 	"github.com/brenbar/telepact/lib/go/telepact/internal/generation"
 )
@@ -44,14 +45,59 @@ func (t *TStruct) GetTypeParameterCount() int {
 
 // Validate validates a value as a struct
 func (t *TStruct) Validate(value interface{}, typeParameters []*TTypeDeclaration, ctx *validation.ValidateContext) []*validation.ValidationFailure {
-	// TODO: Implement validateStruct from internal/validation
-	return nil
+	return validation.ValidateStructType(value, t.Name, func(obj map[string]interface{}) []*validation.ValidationFailure {
+		var selectedFields []string
+		if ctx.Select != nil {
+			if fields, ok := ctx.Select[t.Name].([]string); ok {
+				selectedFields = fields
+			} else if fieldsList, ok := ctx.Select[t.Name].([]interface{}); ok {
+				// Convert []interface{} to []string
+				for _, f := range fieldsList {
+					if str, ok := f.(string); ok {
+						selectedFields = append(selectedFields, str)
+					}
+				}
+			}
+		}
+		
+		// Build field infos
+		var fieldInfos []validation.FieldInfo
+		for fieldName, fieldDecl := range t.Fields {
+			fieldInfos = append(fieldInfos, validation.FieldInfo{
+				Name:     fieldName,
+				Optional: fieldDecl.Optional,
+			})
+		}
+		
+		return validation.ValidateStructFields(fieldInfos, selectedFields, obj, func(fieldName string, fieldValue interface{}) []*validation.ValidationFailure {
+			fieldDecl := t.Fields[fieldName]
+			return fieldDecl.TypeDeclaration.Validate(fieldValue, ctx)
+		}, ctx)
+	}, ctx)
 }
 
 // GenerateRandomValue generates a random struct value
 func (t *TStruct) GenerateRandomValue(blueprintValue interface{}, useBlueprintValue bool, typeParameters []*TTypeDeclaration, ctx *generation.GenerateContext) interface{} {
-	// TODO: Implement generateRandomStruct from internal/generation
-	return make(map[string]interface{})
+	// Build field infos in sorted order
+	var fieldNames []string
+	for fieldName := range t.Fields {
+		fieldNames = append(fieldNames, fieldName)
+	}
+	sort.Strings(fieldNames)
+	
+	var fieldInfos []generation.FieldInfo
+	for _, fieldName := range fieldNames {
+		fieldDecl := t.Fields[fieldName]
+		fieldInfos = append(fieldInfos, generation.FieldInfo{
+			Name:     fieldName,
+			Optional: fieldDecl.Optional,
+		})
+	}
+	
+	return generation.GenerateRandomStructType(blueprintValue, useBlueprintValue, fieldInfos, func(fieldName string, bpValue interface{}, useBp bool) interface{} {
+		fieldDecl := t.Fields[fieldName]
+		return fieldDecl.TypeDeclaration.GenerateRandomValue(bpValue, useBp, ctx)
+	}, ctx)
 }
 
 // GetName returns the type name

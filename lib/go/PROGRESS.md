@@ -10,15 +10,15 @@ This document tracks the progress of porting the Python Telepact library (lib/py
 - 8 packages (main + 7 internal packages)
 
 **Go Port Status:**
-- 50 Go files created (out of ~156 needed)
+- 56 Go files created (out of ~156 needed)
 - Core structure and interfaces established
-- Basic type system implemented (11 types complete)
-- Validation functions for primitive and complex types implemented
-- Generation functions for primitive and complex types implemented
+- Complete type system implemented (11 types)
+- Validation functions for all types implemented
+- Generation functions for all types implemented
 - Unit tests passing
 - Project builds successfully
 
-**Completion: ~32% (50/156 files)**
+**Completion: ~36% (56/156 files)**
 
 ## Project Structure
 
@@ -80,11 +80,11 @@ lib/go/
 - [ ] TMockStub.py → tmock_stub.go (TODO - mocking feature)
 - [x] TNumber.py → tnumber.go (complete)
 - [x] TObject.py → tobject.go (complete with validation and generation)
-- [x] TSelect.py → tselect.go (complete structure, validation/generation stubs)
+- [x] TSelect.py → tselect.go (complete with validation and generation)
 - [x] TString.py → tstring.go (complete)
-- [x] TStruct.py → tstruct.go (complete structure, validation/generation stubs)
+- [x] TStruct.py → tstruct.go (complete with validation and generation)
 - [x] TTypeDeclaration.py → ttype_declaration.go (complete with Validate and GenerateRandomValue methods)
-- [x] TUnion.py → tunion.go (complete structure, validation/generation stubs)
+- [x] TUnion.py → tunion.go (complete with validation and generation)
 - [x] GetType.py → get_type.go (in internal/util)
 
 ### Internal Schema (lib/go/telepact/internal/schema/)
@@ -113,9 +113,11 @@ Validation implementation - ~26 files
 - [x] ValidateBytes.py → validate_bytes.go (complete)
 - [x] ValidateArray.py → validate_array_helper.go (complete)
 - [x] ValidateObject.py → validate_object_helper.go (complete)
-- [ ] ValidateValueOfType.py (implemented in types package)
-- [ ] ValidateStruct.py
-- [ ] ValidateUnion.py
+- [x] ValidateStruct.py → validate_struct_helper.go (complete)
+- [x] ValidateStructFields.py → validate_struct_fields.go (complete)
+- [x] ValidateUnion.py → validate_union_helper.go (complete)
+- [x] ValidateUnionTags.py → validate_union_tags.go (complete)
+- [x] ValidateSelect.py → validate_select_helper.go (complete)
 - [ ] And other validation files...
 
 ### Internal Binary (lib/go/telepact/internal/binary/)
@@ -142,9 +144,9 @@ Random value generation - ~15 files
 - [x] GenerateRandomBytes.py → generate_random_bytes.go (complete)
 - [x] GenerateRandomArray.py → generate_random_array_helper.go (complete)
 - [x] GenerateRandomObject.py → generate_random_object_helper.go (complete)
-- [ ] GenerateRandomValueOfType.py (implemented in types package)
-- [ ] GenerateRandomStruct.py
-- [ ] GenerateRandomUnion.py
+- [x] GenerateRandomStruct.py → generate_random_struct_helper.go (complete)
+- [x] GenerateRandomUnion.py → generate_random_union_helper.go (complete)
+- [x] GenerateRandomSelect.py → generate_random_select_helper.go (complete)
 - [ ] And other generation files...
 
 ### Internal Mock (lib/go/telepact/internal/mock/)
