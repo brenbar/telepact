@@ -28,6 +28,21 @@ type TelepactSchema struct {
 	ParsedResponseHeaders  map[string]*types.TFieldDeclaration
 }
 
+// NewTelepactSchema creates a new TelepactSchema
+func NewTelepactSchema(
+	original []interface{},
+	parsed map[string]types.TType,
+	parsedRequestHeaders map[string]*types.TFieldDeclaration,
+	parsedResponseHeaders map[string]*types.TFieldDeclaration,
+) *TelepactSchema {
+	return &TelepactSchema{
+		Original:              original,
+		Parsed:                parsed,
+		ParsedRequestHeaders:  parsedRequestHeaders,
+		ParsedResponseHeaders: parsedResponseHeaders,
+	}
+}
+
 // NewTelepactSchemaFromJSON creates a TelepactSchema from a JSON string
 func NewTelepactSchemaFromJSON(json string) (*TelepactSchema, error) {
 	fileJSONMap := map[string]string{"auto_": json}

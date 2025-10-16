@@ -50,15 +50,18 @@ var SerializationError = errors.New("serialization error")
 
 // TelepactSchemaParseError represents a schema parsing error
 type TelepactSchemaParseError struct {
-	Message string
-	Details map[string]interface{}
+	SchemaParseFailures  interface{}       // Will be []*SchemaParseFailure from schema package
+	DocumentNamesToJSON  map[string]string
 }
 
 func (e *TelepactSchemaParseError) Error() string {
-	return e.Message
+	return "schema parse error"
 }
 
 // NewTelepactSchemaParseError creates a new TelepactSchemaParseError
-func NewTelepactSchemaParseError(message string, details map[string]interface{}) *TelepactSchemaParseError {
-	return &TelepactSchemaParseError{Message: message, Details: details}
+func NewTelepactSchemaParseError(schemaParseFailures interface{}, documentNamesToJSON map[string]string) *TelepactSchemaParseError {
+	return &TelepactSchemaParseError{
+		SchemaParseFailures: schemaParseFailures,
+		DocumentNamesToJSON: documentNamesToJSON,
+	}
 }
