@@ -29,12 +29,7 @@ func (t *TBytes) GetTypeParameterCount() int {
 }
 
 func (t *TBytes) Validate(value interface{}, typeParameters []*TTypeDeclaration, ctx *validation.ValidateContext) []*validation.ValidationFailure {
-	switch value.(type) {
-	case []byte, string:
-		return nil
-	default:
-		return []*validation.ValidationFailure{{Path: "", Message: "expected bytes"}}
-	}
+	return validation.ValidateBytes(value)
 }
 
 func (t *TBytes) GenerateRandomValue(blueprintValue interface{}, useBlueprintValue bool, typeParameters []*TTypeDeclaration, ctx *generation.GenerateContext) interface{} {

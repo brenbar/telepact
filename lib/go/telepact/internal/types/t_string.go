@@ -29,10 +29,7 @@ func (t *TString) GetTypeParameterCount() int {
 }
 
 func (t *TString) Validate(value interface{}, typeParameters []*TTypeDeclaration, ctx *validation.ValidateContext) []*validation.ValidationFailure {
-	if _, ok := value.(string); !ok {
-		return []*validation.ValidationFailure{{Path: "", Message: "expected string"}}
-	}
-	return nil
+	return validation.ValidateString(value)
 }
 
 func (t *TString) GenerateRandomValue(blueprintValue interface{}, useBlueprintValue bool, typeParameters []*TTypeDeclaration, ctx *generation.GenerateContext) interface{} {

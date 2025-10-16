@@ -29,19 +29,7 @@ func (t *TInteger) GetTypeParameterCount() int {
 }
 
 func (t *TInteger) Validate(value interface{}, typeParameters []*TTypeDeclaration, ctx *validation.ValidateContext) []*validation.ValidationFailure {
-	switch v := value.(type) {
-	case int, int32, int64, float64:
-		// In JSON, numbers come as float64
-		if f, ok := value.(float64); ok {
-			if f != float64(int64(f)) {
-				return []*validation.ValidationFailure{{Path: "", Message: "expected integer"}}
-			}
-		}
-		return nil
-	default:
-		_ = v
-		return []*validation.ValidationFailure{{Path: "", Message: "expected integer"}}
-	}
+	return validation.ValidateInteger(value)
 }
 
 func (t *TInteger) GenerateRandomValue(blueprintValue interface{}, useBlueprintValue bool, typeParameters []*TTypeDeclaration, ctx *generation.GenerateContext) interface{} {

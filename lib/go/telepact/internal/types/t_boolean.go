@@ -29,10 +29,7 @@ func (t *TBoolean) GetTypeParameterCount() int {
 }
 
 func (t *TBoolean) Validate(value interface{}, typeParameters []*TTypeDeclaration, ctx *validation.ValidateContext) []*validation.ValidationFailure {
-	if _, ok := value.(bool); !ok {
-		return []*validation.ValidationFailure{{Path: "", Message: "expected boolean"}}
-	}
-	return nil
+	return validation.ValidateBoolean(value)
 }
 
 func (t *TBoolean) GenerateRandomValue(blueprintValue interface{}, useBlueprintValue bool, typeParameters []*TTypeDeclaration, ctx *generation.GenerateContext) interface{} {

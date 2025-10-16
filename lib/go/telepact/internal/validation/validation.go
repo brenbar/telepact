@@ -18,8 +18,24 @@ package validation
 
 // ValidateContext provides context for validation
 type ValidateContext struct {
-	Path string
-	// Additional context fields would go here
+	Path            []string
+	Select          map[string]interface{}
+	Fn              string
+	CoerceBase64    bool
+	Base64Coercions map[string]interface{}
+	BytesCoercions  map[string]interface{}
+}
+
+// NewValidateContext creates a new ValidateContext
+func NewValidateContext(selectFields map[string]interface{}, fn string, coerceBase64 bool) *ValidateContext {
+	return &ValidateContext{
+		Path:            make([]string, 0),
+		Select:          selectFields,
+		Fn:              fn,
+		CoerceBase64:    coerceBase64,
+		Base64Coercions: make(map[string]interface{}),
+		BytesCoercions:  make(map[string]interface{}),
+	}
 }
 
 // ValidationFailure represents a validation failure
@@ -45,4 +61,23 @@ type InvalidMessageBody struct {
 
 func (e *InvalidMessageBody) Error() string {
 	return "Invalid message body: " + e.Message
+}
+
+// GetTypeUnexpectedValidationFailure creates a validation failure for unexpected type
+func GetTypeUnexpectedValidationFailure(path []string, value interface{}, expectedType string) []*ValidationFailure {
+	pathStr := ""
+	if len(path) > 0 {
+		for i, p := range path {
+			if i > 0 {
+				pathStr += "."
+			}
+			pathStr += p
+		}
+	}
+	
+	return []*ValidationFailure{{
+		Path:    pathStr,
+		Message: "Expected " + expectedType,
+		Value:   value,
+	}}
 }

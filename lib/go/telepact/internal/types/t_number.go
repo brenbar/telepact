@@ -29,12 +29,7 @@ func (t *TNumber) GetTypeParameterCount() int {
 }
 
 func (t *TNumber) Validate(value interface{}, typeParameters []*TTypeDeclaration, ctx *validation.ValidateContext) []*validation.ValidationFailure {
-	switch value.(type) {
-	case int, int32, int64, float32, float64:
-		return nil
-	default:
-		return []*validation.ValidationFailure{{Path: "", Message: "expected number"}}
-	}
+	return validation.ValidateNumber(value)
 }
 
 func (t *TNumber) GenerateRandomValue(blueprintValue interface{}, useBlueprintValue bool, typeParameters []*TTypeDeclaration, ctx *generation.GenerateContext) interface{} {
