@@ -33,19 +33,12 @@ func (t *TBoolean) GetTypeParameterCount() int {
 
 // Validate validates a value as a boolean
 func (t *TBoolean) Validate(value interface{}, typeParameters []*TTypeDeclaration, ctx *validation.ValidateContext) []*validation.ValidationFailure {
-	// TODO: Implement validateBoolean from internal/validation
-	if _, ok := value.(bool); !ok {
-		return []*validation.ValidationFailure{
-			validation.NewValidationFailure("Expected boolean", []string{}),
-		}
-	}
-	return nil
+	return validation.ValidateBoolean(value)
 }
 
 // GenerateRandomValue generates a random boolean value
 func (t *TBoolean) GenerateRandomValue(blueprintValue interface{}, useBlueprintValue bool, typeParameters []*TTypeDeclaration, ctx *generation.GenerateContext) interface{} {
-	// TODO: Implement generateRandomBoolean from internal/generation
-	return true
+	return generation.GenerateRandomBoolean(blueprintValue, useBlueprintValue, ctx)
 }
 
 // GetName returns the type name

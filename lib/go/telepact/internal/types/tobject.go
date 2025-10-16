@@ -35,9 +35,7 @@ func (t *TObject) GetTypeParameterCount() int {
 func (t *TObject) Validate(value interface{}, typeParameters []*TTypeDeclaration, ctx *validation.ValidateContext) []*validation.ValidationFailure {
 	// TODO: Implement validateObject from internal/validation
 	if _, ok := value.(map[string]interface{}); !ok {
-		return []*validation.ValidationFailure{
-			validation.NewValidationFailure("Expected object", []string{}),
-		}
+		return validation.GetTypeUnexpectedValidationFailure([]interface{}{}, value, objectName)
 	}
 	return nil
 }

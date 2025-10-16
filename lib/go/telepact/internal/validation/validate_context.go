@@ -18,19 +18,26 @@ package validation
 
 // ValidateContext provides context for validation
 type ValidateContext struct {
-	// TODO: Add fields as needed
+	// TODO: Add fields as needed for validation context
+}
+
+// NewValidateContext creates a new ValidateContext
+func NewValidateContext() *ValidateContext {
+	return &ValidateContext{}
 }
 
 // ValidationFailure represents a validation failure
 type ValidationFailure struct {
-	Message string
-	Path    []string
+	Path   []interface{}
+	Reason string
+	Data   map[string]interface{}
 }
 
 // NewValidationFailure creates a new ValidationFailure
-func NewValidationFailure(message string, path []string) *ValidationFailure {
+func NewValidationFailure(path []interface{}, reason string, data map[string]interface{}) *ValidationFailure {
 	return &ValidationFailure{
-		Message: message,
-		Path:    path,
+		Path:   path,
+		Reason: reason,
+		Data:   data,
 	}
 }

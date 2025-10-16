@@ -33,19 +33,12 @@ func (t *TString) GetTypeParameterCount() int {
 
 // Validate validates a value as a string
 func (t *TString) Validate(value interface{}, typeParameters []*TTypeDeclaration, ctx *validation.ValidateContext) []*validation.ValidationFailure {
-	// TODO: Implement validateString from internal/validation
-	if _, ok := value.(string); !ok {
-		return []*validation.ValidationFailure{
-			validation.NewValidationFailure("Expected string", []string{}),
-		}
-	}
-	return nil
+	return validation.ValidateString(value)
 }
 
 // GenerateRandomValue generates a random string value
 func (t *TString) GenerateRandomValue(blueprintValue interface{}, useBlueprintValue bool, typeParameters []*TTypeDeclaration, ctx *generation.GenerateContext) interface{} {
-	// TODO: Implement generateRandomString from internal/generation
-	return "example"
+	return generation.GenerateRandomString(blueprintValue, useBlueprintValue, ctx)
 }
 
 // GetName returns the type name

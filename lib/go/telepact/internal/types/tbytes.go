@@ -33,19 +33,12 @@ func (t *TBytes) GetTypeParameterCount() int {
 
 // Validate validates a value as bytes
 func (t *TBytes) Validate(value interface{}, typeParameters []*TTypeDeclaration, ctx *validation.ValidateContext) []*validation.ValidationFailure {
-	// TODO: Implement validateBytes from internal/validation
-	if _, ok := value.([]byte); !ok {
-		return []*validation.ValidationFailure{
-			validation.NewValidationFailure("Expected bytes", []string{}),
-		}
-	}
-	return nil
+	return validation.ValidateBytes(value)
 }
 
 // GenerateRandomValue generates random bytes
 func (t *TBytes) GenerateRandomValue(blueprintValue interface{}, useBlueprintValue bool, typeParameters []*TTypeDeclaration, ctx *generation.GenerateContext) interface{} {
-	// TODO: Implement generateRandomBytes from internal/generation
-	return []byte{1, 2, 3, 4}
+	return generation.GenerateRandomBytes(blueprintValue, useBlueprintValue, ctx)
 }
 
 // GetName returns the type name
