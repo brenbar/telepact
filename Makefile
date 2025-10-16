@@ -64,6 +64,21 @@ test-trace-ts:
 deploy-ts:
 	$(MAKE) -C lib/ts deploy
 
+go:
+	$(MAKE) -C lib/go
+
+clean-go:
+	$(MAKE) -C lib/go clean
+
+test-go:
+	$(MAKE) -C test/runner test-go
+
+test-trace-go:
+	$(MAKE) -C test/runner test-trace-go
+
+deploy-go:
+	$(MAKE) -C lib/go deploy
+
 .PHONY: test
 test:
 	$(MAKE) -C test/runner test
@@ -73,6 +88,7 @@ clean-test:
 	$(MAKE) -C test/lib/java clean
 	$(MAKE) -C test/lib/py clean
 	$(MAKE) -C test/lib/ts clean
+	$(MAKE) -C test/lib/go clean
 
 dart:
 	$(MAKE) -C bind/dart
@@ -153,6 +169,7 @@ version:
 	cd lib/java && telepact-project set-version ${VERSION}
 	cd lib/py && telepact-project set-version ${VERSION}
 	cd lib/ts && telepact-project set-version ${VERSION}
+	cd lib/go && telepact-project set-version ${VERSION}
 	cd bind/dart && telepact-project set-version ${VERSION}
 	cd sdk/cli && telepact-project set-version ${VERSION}
 	cd sdk/prettier && telepact-project set-version ${VERSION}
