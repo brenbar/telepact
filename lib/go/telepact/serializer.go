@@ -17,6 +17,8 @@
 package telepact
 
 import (
+	"fmt"
+
 	"github.com/brenbar/telepact/lib/go/telepact/internal/binary"
 )
 
@@ -38,32 +40,97 @@ func NewSerializer(serializationImpl Serialization, binaryEncoder binary.BinaryE
 
 // Serialize converts a Message into a byte array
 func (s *Serializer) Serialize(message *Message) ([]byte, error) {
-	// TODO: Implement full serialization logic
-	return s.serializationImpl.ToJSON(message)
+	headers := make(map[string]interface{})
+	for k, v := range message.Headers {
+		headers[k] = v
+	}
+	
+	serializeAsBinary := false
+	if val, ok := headers["@binary_"]; ok {
+		if b, isBool := val.(bool); isBool && b {
+			serializeAsBinary = true
+		}
+		delete(headers, "@binary_")
+	}
+	
+	messageAsPseudoJSON := []interface{}{headers, message.Body}
+	
+	if serializeAsBinary {
+		// Try binary encoding first
+		encodedMessage, err := s.binaryEncoder.Encode(messageAsPseudoJSON)
+		if err == nil {
+			return s.serializationImpl.ToMsgpack(encodedMessage)
+		}
+		// Fall back to base64 + JSON
+		base64EncodedMessage := s.base64Encoder.Encode(messageAsPseudoJSON)
+		return s.serializationImpl.ToJSON(base64EncodedMessage)
+	}
+	
+	// Default: base64 + JSON
+	base64EncodedMessage := s.base64Encoder.Encode(messageAsPseudoJSON)
+	return s.serializationImpl.ToJSON(base64EncodedMessage)
 }
 
 // Deserialize converts a byte array into a Message
 func (s *Serializer) Deserialize(messageBytes []byte) (*Message, error) {
-	// TODO: Implement full deserialization logic
-	result, err := s.serializationImpl.FromJSON(messageBytes)
+	var messageAsPseudoJSON interface{}
+	var isMsgPack bool
+	var err error
+	
+	// Check if it's MessagePack (starts with 0x92 for array of 2)
+	if len(messageBytes) > 0 && messageBytes[0] == 0x92 {
+		isMsgPack = true
+		messageAsPseudoJSON, err = s.serializationImpl.FromMsgpack(messageBytes)
+	} else {
+		isMsgPack = false
+		messageAsPseudoJSON, err = s.serializationImpl.FromJSON(messageBytes)
+	}
+	
 	if err != nil {
-		return nil, err
+		return nil, &SerializationError{Message: "invalid message format", Cause: err}
 	}
 	
-	// Convert result to Message
-	msgMap, ok := result.(map[string]interface{})
+	messageList, ok := messageAsPseudoJSON.([]interface{})
 	if !ok {
-		return nil, &SerializationError{Message: "invalid message format"}
+		return nil, &SerializationError{Message: "message must be array"}
 	}
 	
-	headers, _ := msgMap["headers"].(map[string]interface{})
-	body, _ := msgMap["body"].(map[string]interface{})
-	
-	if headers == nil {
-		headers = make(map[string]interface{})
+	if len(messageList) != 2 {
+		return nil, &SerializationError{Message: "message must have 2 elements"}
 	}
-	if body == nil {
-		body = make(map[string]interface{})
+	
+	var finalMessageList []interface{}
+	if isMsgPack {
+		finalMessageList, err = s.binaryEncoder.Decode(messageList)
+		if err != nil {
+			return nil, err
+		}
+	} else {
+		finalMessageList, err = s.base64Encoder.Decode(messageList)
+		if err != nil {
+			return nil, err
+		}
+	}
+	
+	headers, ok := finalMessageList[0].(map[string]interface{})
+	if !ok {
+		return nil, &SerializationError{Message: "headers must be object"}
+	}
+	
+	body, ok := finalMessageList[1].(map[string]interface{})
+	if !ok {
+		return nil, &SerializationError{Message: "body must be object"}
+	}
+	
+	if len(body) != 1 {
+		return nil, &SerializationError{Message: "body must have exactly one entry"}
+	}
+	
+	// Validate body value is an object
+	for _, v := range body {
+		if _, ok := v.(map[string]interface{}); !ok {
+			return nil, &SerializationError{Message: fmt.Sprintf("body value must be object, got %T", v)}
+		}
 	}
 	
 	return &Message{
