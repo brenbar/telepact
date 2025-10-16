@@ -10,7 +10,7 @@ This document tracks the progress of porting the Python Telepact library (lib/py
 - 8 packages (main + 7 internal packages)
 
 **Go Port Status:**
-- 75 Go files created (out of ~156 needed)
+- 77 Go files created (out of ~156 needed)
 - Core structure and interfaces established
 - Complete type system implemented (15 types)
 - All type definitions complete (including TError, THeaders, TMockCall, TMockStub)
@@ -19,11 +19,11 @@ This document tracks the progress of porting the Python Telepact library (lib/py
 - Utility functions for struct field selection and message handling
 - Validation error types and helper functions
 - Binary encoder interfaces defined
-- Schema parsing infrastructure started (7 files)
+- Schema parsing infrastructure expanded (9 files)
 - Unit tests passing
 - Project builds successfully
 
-**Completion: ~48% (75/156 files)**
+**Completion: ~49% (77/156 files)**
 
 ## Project Structure
 
@@ -103,15 +103,15 @@ Schema parsing implementation - ~27 files
 - [x] FindMatchingSchemaKey.py → find_matching_schema_key.go (complete)
 - [x] GetOrParseType.py → get_or_parse_type.go (stub with standard type support)
 - [x] ParseTelepactSchema.py → parse_telepact_schema.go (stub with basic structure)
+- [x] ParseTypeDeclaration.py → parse_type_declaration.go (complete)
+- [x] ParseField.py → parse_field.go (complete)
 - [ ] CreateTelepactSchemaFromFileJsonMap.py
-- [ ] ParseTypeDeclaration.py
 - [ ] ParseFunctionType.py
 - [ ] ParseStructType.py
 - [ ] ParseUnionType.py
-- [ ] ParseField.py
 - [ ] ParseErrorType.py
 - [ ] ParseHeadersType.py
-- [ ] And ~17 other schema parsing files...
+- [ ] And ~15 other schema parsing files...
 
 ### Internal Validation (lib/go/telepact/internal/validation/)
 
