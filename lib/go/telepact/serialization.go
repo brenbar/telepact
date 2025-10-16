@@ -1,0 +1,29 @@
+//
+//  Copyright The Telepact Authors
+//
+//  Licensed under the Apache License, Version 2.0 (the "License");
+//  you may not use this file except in compliance with the License.
+//  You may obtain a copy of the License at
+//
+//  https://www.apache.org/licenses/LICENSE-2.0
+//
+//  Unless required by applicable law or agreed to in writing, software
+//  distributed under the License is distributed on an "AS IS" BASIS,
+//  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//  See the License for the specific language governing permissions and
+//  limitations under the License.
+//
+
+package telepact
+
+// Serialization is an interface for converting between pseudo-JSON objects and
+// byte array JSON/MessagePack payloads.
+//
+// Pseudo-JSON objects are defined as data structures that represent JSON
+// objects as maps and JSON arrays as slices.
+type Serialization interface {
+	ToJSON(message interface{}) ([]byte, error)
+	ToMsgpack(message interface{}) ([]byte, error)
+	FromJSON(bytes []byte) (interface{}, error)
+	FromMsgpack(bytes []byte) (interface{}, error)
+}
