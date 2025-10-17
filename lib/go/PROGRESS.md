@@ -19,16 +19,18 @@ This document tracks the progress of porting the Python Telepact library (lib/py
 - Utility functions for struct field selection and message handling
 - Validation error types and helper functions
 - Binary encoder interfaces defined
-- Schema parsing infrastructure (24 files) - 89% COMPLETE ✅
+- Schema parsing infrastructure (27 files) - 100% COMPLETE ✅
   - All major type parsers complete
-  - Entry points complete (CreateTelepactSchemaFromFileJsonMap)
+  - Entry points complete (CreateTelepactSchemaFromFileJsonMap, CreateMockTelepactSchemaFromFileJsonMap)
   - Embedded schema JSON files (internal, auth, mock)
   - Collision detection complete
+  - Error formatting complete (MapSchemaParseFailuresToPseudoJson)
+  - File loading complete (GetSchemaFileMap)
 - Mock type validation/generation complete
 - Unit tests passing (5/5 tests)
 - Project builds successfully
 
-**Completion: ~59% (92/156 files)**
+**Completion: ~62% (96/156 files)**
 
 ## Project Structure
 
@@ -70,7 +72,7 @@ lib/go/
 - [x] TelepactError.py → errors.go (complete)
 - [x] SerializationError.py → errors.go (complete)
 - [ ] MockServer.py → mock_server.go
-- [ ] MockTelepactSchema.py → mock_schema.go
+- [x] MockTelepactSchema.py → mock_schema.go (structure complete, needs wiring)
 - [ ] TestClient.py → test_client.go
 - [x] TypedMessage.py → typed_message.go (basic structure in message.go)
 - [x] RandomGenerator.py → random_generator.go (complete)
@@ -124,10 +126,10 @@ Schema parsing implementation - ~27 files
 - [x] GetInternalTelepactJson.py → get_internal_telepact_json.go (complete with embed)
 - [x] GetAuthTelepactJson.py → get_auth_telepact_json.go (complete with embed)
 - [x] GetMockTelepactJson.py → get_mock_telepact_json.go (complete with embed)
-- [ ] GetSchemaFileMap.py
+- [x] GetSchemaFileMap.py → get_schema_file_map.go (complete)
 - [x] GetPathDocumentCoordinatesPseudoJson.py → get_path_document_coordinates_pseudo_json.go (stub)
-- [ ] MapSchemaParseFailuresToPseudoJson.py
-- [ ] CreateMockTelepactSchemaFromFileJsonMap.py
+- [x] MapSchemaParseFailuresToPseudoJson.py → map_schema_parse_failures_to_pseudo_json.go (complete)
+- [x] CreateMockTelepactSchemaFromFileJsonMap.py → create_mock_telepact_schema_from_file_json_map.go (complete)
 
 ### Internal Validation (lib/go/telepact/internal/validation/)
 
