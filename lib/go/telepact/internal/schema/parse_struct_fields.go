@@ -25,9 +25,10 @@ func ParseStructFields(
 			if fieldNoOpt == existingFieldNoOpt {
 				finalPath := append(path, fieldDeclaration)
 				finalOtherPath := append(path, existingField)
-				finalOtherDocumentPseudoJSON := ctx.TelepactSchemaDocumentNamesToPseudoJSON[ctx.DocumentName]
-				finalOtherLocationPseudoJSON := GetPathDocumentCoordinatesPseudoJSON(
-					finalOtherPath, finalOtherDocumentPseudoJSON)
+				// Note: document JSON is stored as []interface{} in ParseContext
+				finalOtherLocationPseudoJSON := map[string]interface{}{
+					"path": finalOtherPath,
+				}
 				parseFailures = append(parseFailures, &SchemaParseFailure{
 					DocumentName: ctx.DocumentName,
 					Path:         finalPath,
@@ -63,17 +64,6 @@ func ParseStructFields(
 	}
 
 	return fields, nil
-}
-
-// GetPathDocumentCoordinatesPseudoJSON returns the pseudo-JSON location for a path
-func GetPathDocumentCoordinatesPseudoJSON(path []interface{}, documentJSON []interface{}) map[string]interface{} {
-	// Simplified implementation - returns basic location info
-	// In full implementation, would traverse documentJSON to find exact line/column
-	return map[string]interface{}{
-		"line":   0,
-		"column": 0,
-		"path":   fmt.Sprintf("%v", path),
-	}
 }
 
 // TelepactSchemaParseErrorType represents a schema parse error
