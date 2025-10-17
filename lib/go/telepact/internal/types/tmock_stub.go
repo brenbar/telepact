@@ -105,7 +105,7 @@ func (t *TMockStub) validateMockStub(givenObj interface{}, ctx *validation.Valid
 	result := givenMap[functionName]
 
 	// Validate using the result union
-	resultFailures := functionDefResult.Validate(result, []interface{}{}, ctx)
+	resultFailures := functionDefResult.Validate(result, nil, ctx)
 
 	resultFailuresWithPath := make([]*validation.ValidationFailure, 0, len(resultFailures))
 	for _, f := range resultFailures {

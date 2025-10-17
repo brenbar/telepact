@@ -116,7 +116,7 @@ func (t *TMockCall) validateMockCall(givenObj interface{}, ctx *validation.Valid
 		}}
 	}
 
-	inputFailures := functionDefCallTag.Validate(input, []interface{}{}, ctx)
+	inputFailures := functionDefCallTag.Validate(input, nil, ctx)
 
 	inputFailuresWithPath := make([]*validation.ValidationFailure, 0, len(inputFailures))
 	for _, f := range inputFailures {
@@ -169,10 +169,10 @@ func (t *TMockCall) generateRandomMockCall(ctx *generation.GenerateContext) inte
 		return map[string]interface{}{}
 	}
 
-	newCtx := ctx.Copy()
-	newCtx.AlwaysIncludeRequiredFields = false
+	alwaysIncludeReq := false
+	newCtx := ctx.Copy(nil, nil, &alwaysIncludeReq, nil, ctx.RandomGenerator)
 
-	return selectedFn.GenerateRandomValue(nil, false, []*TTypeDeclaration{}, newCtx)
+	return selectedFn.GenerateRandomValue(nil, false, nil, newCtx)
 }
 
 // GetName returns the type name
