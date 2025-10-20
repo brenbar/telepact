@@ -14,21 +14,19 @@
 #|  limitations under the License.
 #|
 
-from typing import cast, TYPE_CHECKING
+from typing import cast
 
+from ..Serialization import Serialization
 from ..Message import Message
+from ..internal.binary.BinaryEncoder import BinaryEncoder
+from ..internal.binary.Base64Encoder import Base64Encoder
 from ..internal.validation.InvalidMessage import InvalidMessage
 from ..internal.validation.InvalidMessageBody import InvalidMessageBody
 
-if TYPE_CHECKING:
-    from ..Serialization import Serialization
-    from ..internal.binary.BinaryEncoder import BinaryEncoder
-    from ..internal.binary.Base64Encoder import Base64Encoder
 
-
-def deserialize_internal(message_bytes: bytes, serializer: 'Serialization',
-                         binary_encoder: 'BinaryEncoder',
-                         base64_encoder: 'Base64Encoder') -> 'Message':
+def deserialize_internal(message_bytes: bytes, serializer: Serialization,
+                         binary_encoder: BinaryEncoder,
+                         base64_encoder: Base64Encoder) -> Message:
     message_as_pseudo_json: object
     is_msg_pack: bool
 

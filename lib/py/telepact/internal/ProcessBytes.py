@@ -14,23 +14,20 @@
 #|  limitations under the License.
 #|
 
-from typing import Callable, TYPE_CHECKING, Awaitable
+from typing import Callable, Awaitable
 
 from ..Message import Message
-
-if TYPE_CHECKING:
-    from ..Serializer import Serializer
-    from ..TelepactSchema import TelepactSchema
-    from ..Response import Response
+from ..Serializer import Serializer
+from ..TelepactSchema import TelepactSchema
+from ..Response import Response
+from ..internal.HandleMessage import handle_message
+from ..internal.ParseRequestMessage import parse_request_message
 
 
 async def process_bytes(request_message_bytes: bytes, override_headers: dict[str, object],
-                        serializer: 'Serializer', telepact_schema: 'TelepactSchema',
-                        on_error: Callable[[Exception], None], on_request: Callable[['Message'], None],
-                        on_response: Callable[['Message'], None], handler: Callable[['Message'], Awaitable['Message']]) -> 'Response':
-    from ..internal.HandleMessage import handle_message
-    from ..internal.ParseRequestMessage import parse_request_message
-    from ..Response import Response
+                        serializer: Serializer, telepact_schema: TelepactSchema,
+                        on_error: Callable[[Exception], None], on_request: Callable[[Message], None],
+                        on_response: Callable[[Message], None], handler: Callable[[Message], Awaitable[Message]]) -> Response:
 
     try:
         request_message = parse_request_message(

@@ -15,21 +15,19 @@
 #|
 
 import asyncio
-from typing import Callable, TYPE_CHECKING, cast, Awaitable
+from typing import Callable, cast, Awaitable
 
-if TYPE_CHECKING:
-    from ..Message import Message
-    from ..Serializer import Serializer
+from ..Message import Message
+from ..Serializer import Serializer
+from ..TelepactError import TelepactError
 
 
-async def client_handle_message(request_message: 'Message',
-                                 adapter: Callable[['Message', 'Serializer'], Awaitable['Message']],
-                                 serializer: 'Serializer',
+async def client_handle_message(request_message: Message,
+                                 adapter: Callable[[Message, Serializer], Awaitable[Message]],
+                                 serializer: Serializer,
                                  timeout_ms_default: int,
                                  use_binary_default: bool,
-                                 always_send_json: bool) -> 'Message':
-    from ..TelepactError import TelepactError
-
+                                 always_send_json: bool) -> Message:
     header: dict[str, object] = request_message.headers
 
     try:
