@@ -14,33 +14,29 @@
 #|  limitations under the License.
 #|
 
-from typing import TYPE_CHECKING, Optional, cast
+from typing import Optional, cast
 import json
 
-if TYPE_CHECKING:
-    from .Client import Client
-    from .Message import Message
-    from .TelepactSchema import TelepactSchema
-    from .internal.types.TUnion import TUnion
+from .Client import Client
+from .Message import Message
+from .TelepactSchema import TelepactSchema
+from .internal.types.TUnion import TUnion
+from .RandomGenerator import RandomGenerator
+from .internal.mock.IsSubMap import is_sub_map
+from .internal.generation.GenerateContext import GenerateContext
+
 
 class TestClient:
     class Options:
         generated_collection_length_min: int = 0
         generated_collection_length_max: int = 3
 
-    def __init__(self, client: 'Client', options: Options):
-        from .RandomGenerator import RandomGenerator
-
+    def __init__(self, client: Client, options: Options):
         self.client = client
         self.random = RandomGenerator(options.generated_collection_length_min, options.generated_collection_length_max)
-        self.schema: Optional['TelepactSchema'] = None
+        self.schema: Optional[TelepactSchema] = None
 
-    async def assert_request(self, request_message: 'Message', expected_pseudo_json_body: dict[str, object], expect_match: bool) -> 'Message':
-        from .internal.mock.IsSubMap import is_sub_map
-        from .Message import Message
-        from .TelepactSchema import TelepactSchema
-        from .internal.generation.GenerateContext import GenerateContext
-        from .internal.types.TUnion import TUnion
+    async def assert_request(self, request_message: Message, expected_pseudo_json_body: dict[str, object], expect_match: bool) -> Message:
 
         if self.schema is None:
             response = await self.client.request(Message({}, {"fn.api_": {}}))

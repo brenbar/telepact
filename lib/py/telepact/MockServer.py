@@ -14,13 +14,16 @@
 #|  limitations under the License.
 #|
 
-from typing import Callable, TYPE_CHECKING
+from typing import Callable
 
-if TYPE_CHECKING:
-    from .Message import Message
-    from .MockTelepactSchema import MockTelepactSchema
-    from .internal.mock.MockInvocation import MockInvocation
-    from .internal.mock.MockStub import MockStub
+from .Message import Message
+from .MockTelepactSchema import MockTelepactSchema
+from .internal.mock.MockInvocation import MockInvocation
+from .internal.mock.MockStub import MockStub
+from .Server import Server
+from .RandomGenerator import RandomGenerator
+from .TelepactSchema import TelepactSchema
+from .internal.mock.MockHandle import mock_handle
 
 
 class MockServer:
@@ -41,11 +44,7 @@ class MockServer:
             self.generated_collection_length_min: int = 0
             self.generated_collection_length_max: int = 3
 
-    def __init__(self, mock_telepact_schema: 'MockTelepactSchema', options: Options) -> None:
-        from .Server import Server
-        from .RandomGenerator import RandomGenerator
-        from .TelepactSchema import TelepactSchema
-
+    def __init__(self, mock_telepact_schema: MockTelepactSchema, options: Options) -> None:
         self.random: RandomGenerator = RandomGenerator(
             options.generated_collection_length_min, options.generated_collection_length_max)
         self.enableGeneratedDefaultStub: bool = options.enable_message_response_generation
@@ -74,8 +73,7 @@ class MockServer:
         """
         return await self.server.process(message)
 
-    async def _handle(self, request_message: 'Message') -> 'Message':
-        from .internal.mock.MockHandle import mock_handle
+    async def _handle(self, request_message: Message) -> Message:
         return await mock_handle(request_message, self.stubs, self.invocations, self.random,
                                  self.server.telepact_schema, self.enableGeneratedDefaultStub,
                                  self.enable_optional_field_generation, self.randomize_optional_field_generation)
