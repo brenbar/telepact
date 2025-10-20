@@ -18,6 +18,8 @@ from .Message import Message
 from .Serialization import Serialization
 from .internal.binary.BinaryEncoder import BinaryEncoder
 from .internal.binary.Base64Encoder import Base64Encoder
+from .internal.SerializeInternal import serialize_internal
+from .internal.DeserializeInternal import deserialize_internal
 
 
 class Serializer:
@@ -34,12 +36,10 @@ class Serializer:
         """
         Serialize a Message into a byte array.
         """
-        from .internal.SerializeInternal import serialize_internal
         return serialize_internal(message, self.binary_encoder, self.base64_encoder, self.serialization_impl)
 
     def deserialize(self, message_bytes: bytes) -> Message:
         """
         Deserialize a Message from a byte array.
         """
-        from .internal.DeserializeInternal import deserialize_internal
         return deserialize_internal(message_bytes, self.serialization_impl, self.binary_encoder, self.base64_encoder)

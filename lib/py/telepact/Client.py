@@ -14,17 +14,16 @@
 #|  limitations under the License.
 #|
 
-from typing import Callable, TYPE_CHECKING, Awaitable, Any
+from typing import Callable, Awaitable, Any
 from concurrent.futures import Future
 
+from .Message import Message
 from .internal.binary.DefaultBinaryEncodingCache import DefaultBinaryEncodingCache
 from .DefaultSerialization import DefaultSerialization
 from .Serializer import Serializer
 from .internal.binary.ClientBinaryEncoder import ClientBinaryEncoder
 from .internal.binary.ClientBase64Encoder import ClientBase64Encoder
-
-if TYPE_CHECKING:
-    from .Message import Message
+from .internal.ClientHandleMessage import client_handle_message
 
 
 class Client:
@@ -35,7 +34,7 @@ class Client:
             self.timeout_ms_default = 5000
             self.serialization_impl = DefaultSerialization()
 
-    def __init__(self, adapter: Callable[['Message', 'Serializer'], Awaitable['Message']], options: 'Options'):
+    def __init__(self, adapter: Callable[[Message, Serializer], Awaitable[Message]], options: 'Options'):
         self.adapter = adapter
         self.use_binary_default = options.use_binary
         self.always_send_json = options.always_send_json
@@ -47,6 +46,5 @@ class Client:
 
         self.serializer = Serializer(options.serialization_impl, binary_encoder, base64_encoder)
 
-    async def request(self, request_message: 'Message') -> 'Message':
-        from .internal.ClientHandleMessage import client_handle_message
+    async def request(self, request_message: Message) -> Message:
         return await client_handle_message(request_message, self.adapter, self.serializer, self.timeout_ms_default, self.use_binary_default, self.always_send_json)
