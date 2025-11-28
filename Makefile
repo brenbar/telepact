@@ -64,6 +64,15 @@ test-trace-ts:
 deploy-ts:
 	$(MAKE) -C lib/ts deploy
 
+go:
+	$(MAKE) -C lib/go
+
+clean-go:
+	$(MAKE) -C lib/go clean
+
+test-go:
+	$(MAKE) -C lib/go test
+
 .PHONY: test
 test:
 	$(MAKE) -C test/runner test
