@@ -1,0 +1,49 @@
+{
+  "name": "telepact",
+  "displayName": "Telepact",
+  "description": "JSON schema validation for Telepact API schema files (*.telepact.json)",
+  "version": "1.0.0-alpha.167",
+  "publisher": "telepact",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/telepact/telepact.git"
+  },
+  "bugs": {
+    "url": "https://github.com/telepact/telepact/issues"
+  },
+  "homepage": "https://github.com/telepact/telepact",
+  "engines": {
+    "vscode": "^1.80.0"
+  },
+  "categories": [
+    "Programming Languages",
+    "Linters"
+  ],
+  "keywords": [
+    "telepact",
+    "json-schema",
+    "validation"
+  ],
+  "activationEvents": [],
+  "main": "./out/extension.js",
+  "contributes": {
+    "jsonValidation": [
+      {
+        "fileMatch": "*.telepact.json",
+        "url": "./schemas/telepact-schema.json"
+      }
+    ]
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.80.0",
+    "@vscode/vsce": "^3.2.1",
+    "typescript": "^5.9.3"
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "package": "vsce package",
+    "deploy": "vsce publish"
+  }
+}

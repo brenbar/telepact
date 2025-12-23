@@ -110,6 +110,15 @@ clean-prettier:
 deploy-prettier:
 	$(MAKE) -C sdk/prettier deploy
 
+vscode:
+	$(MAKE) -C sdk/vscode
+
+clean-vscode:
+	$(MAKE) -C sdk/vscode clean
+
+deploy-vscode:
+	$(MAKE) -C sdk/vscode deploy
+
 console:
 	$(MAKE) -C sdk/console
 
