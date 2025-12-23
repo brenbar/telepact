@@ -14,20 +14,17 @@
 #|  limitations under the License.
 #|
 
-from typing import TYPE_CHECKING
-
+from ..Serialization import Serialization
+from ..Message import Message
+from ..internal.binary.BinaryEncoder import BinaryEncoder
+from ..internal.binary.Base64Encoder import Base64Encoder
 from ..internal.binary.BinaryEncoderUnavailableError import BinaryEncoderUnavailableError
 from ..SerializationError import SerializationError
 
-if TYPE_CHECKING:
-    from ..Serialization import Serialization
-    from ..Message import Message
-    from ..internal.binary.BinaryEncoder import BinaryEncoder
-    from ..internal.binary.Base64Encoder import Base64Encoder
 
-def serialize_internal(message: 'Message', binary_encoder: 'BinaryEncoder',
-                       base64_encoder: 'Base64Encoder',
-                       serializer: 'Serialization') -> bytes:
+def serialize_internal(message: Message, binary_encoder: BinaryEncoder,
+                       base64_encoder: Base64Encoder,
+                       serializer: Serialization) -> bytes:
     headers: dict[str, object] = message.headers
 
     serialize_as_binary: bool

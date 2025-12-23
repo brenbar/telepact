@@ -14,11 +14,9 @@
 #|  limitations under the License.
 #|
 
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    from .internal.types.TFieldDeclaration import TFieldDeclaration
-    from .internal.types.TType import TType
+from .internal.types.TFieldDeclaration import TFieldDeclaration
+from .internal.types.TType import TType
+from .internal.schema.GetSchemaFileMap import get_schema_file_map
 
 
 class MockTelepactSchema:
@@ -26,8 +24,8 @@ class MockTelepactSchema:
     A parsed telepact schema.
     """
 
-    def __init__(self, original: list[object], parsed: dict[str, 'TType'], parsed_request_headers: dict[str, 'TFieldDeclaration'],
-                 parsed_response_headers: dict[str, 'TFieldDeclaration']):
+    def __init__(self, original: list[object], parsed: dict[str, TType], parsed_request_headers: dict[str, TFieldDeclaration],
+                 parsed_response_headers: dict[str, TFieldDeclaration]):
         self.original = original
         self.parsed = parsed
         self.parsed_request_headers = parsed_request_headers
@@ -46,6 +44,5 @@ class MockTelepactSchema:
     @staticmethod
     def from_directory(directory: str) -> 'MockTelepactSchema':
         from .internal.schema.CreateMockTelepactSchemaFromFileJsonMap import create_mock_telepact_schema_from_file_json_map
-        from .internal.schema.GetSchemaFileMap import get_schema_file_map
         schema_file_map = get_schema_file_map(directory)
         return create_mock_telepact_schema_from_file_json_map(schema_file_map)

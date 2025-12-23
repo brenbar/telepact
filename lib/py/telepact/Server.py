@@ -14,17 +14,18 @@
 #|  limitations under the License.
 #|
 
-from typing import Callable, TYPE_CHECKING, Awaitable, NamedTuple
+from typing import Callable, Awaitable, NamedTuple
 
+from .Message import Message
+from .TelepactSchema import TelepactSchema
+from .Response import Response
 from .DefaultSerialization import DefaultSerialization
 from .Serializer import Serializer
 from .internal.binary.ServerBinaryEncoder import ServerBinaryEncoder
 from .internal.binary.ServerBase64Encoder import ServerBase64Encoder
+from .internal.binary.ConstructBinaryEncoding import construct_binary_encoding
+from .internal.ProcessBytes import process_bytes
 
-if TYPE_CHECKING:
-    from .Message import Message
-    from .TelepactSchema import TelepactSchema
-    from .Response import Response
 
 class Server:
     """
@@ -42,12 +43,10 @@ class Server:
             self.auth_required = True
             self.serialization = DefaultSerialization()
 
-    def __init__(self, telepact_schema: 'TelepactSchema', handler: Callable[['Message'], Awaitable['Message']], options: Options):
+    def __init__(self, telepact_schema: TelepactSchema, handler: Callable[[Message], Awaitable[Message]], options: Options):
         """
         Create a server with the given telepact schema and handler.
         """
-        from .internal.binary.ConstructBinaryEncoding import construct_binary_encoding
-
         self.handler = handler
         self.on_error = options.on_error
         self.on_request = options.on_request
@@ -65,11 +64,9 @@ class Server:
                 "Unauthenticated server. Either define a `struct.Auth_` in your schema or set `options.auth_required` to `false`."
             )
 
-    async def process(self, request_message_bytes: bytes, override_headers: dict[str, object] = {}) -> 'Response':
+    async def process(self, request_message_bytes: bytes, override_headers: dict[str, object] = {}) -> Response:
         """
         Process a given telepact Request Message into a telepact Response Message.
         """
-        from .internal.ProcessBytes import process_bytes
-
         return await process_bytes(request_message_bytes, override_headers, self.serializer, self.telepact_schema, self.on_error,
                                    self.on_request, self.on_response, self.handler)
